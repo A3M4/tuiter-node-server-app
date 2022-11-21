@@ -1,17 +1,26 @@
-import posts from "./tuits.js";
+import posts from './tuits.js';
+
 let tuits = posts;
 
 const createTuit = (req, res) => {
     const newTuit = req.body;
     newTuit._id = (new Date()).getTime()+'';
+    newTuit.time = "2h";
+    newTuit.userName = "NASA";
+    newTuit.handle = "nasa";
+    newTuit.avatarIcon = "nasa.png"
     newTuit.likes = 0;
     newTuit.liked = false;
+    newTuit.dislikes = 0;
+    newTuit.disliked = false;
     tuits.push(newTuit);
     res.json(newTuit);
 }
 
-const findTuits = (req, res) =>
+
+const findTuits = (req, res) => {
     res.json(tuits);
+}
 
 const updateTuit = (req, res) => {
     const tuitdIdToUpdate = req.params.tid;
@@ -26,18 +35,13 @@ const updateTuit = (req, res) => {
 
 const deleteTuit = (req, res) => {
     const tuitdIdToDelete = req.params.tid;
-    tuits = tuits.filter((t) =>
-        t._id !== tuitdIdToDelete);
+    tuits = tuits.filter((t) => t._id !== tuitdIdToDelete);
     res.sendStatus(200);
 }
 
-
-
-
 export default (app) => {
-    app.post('/api/tuits', createTuit);
+    app.post('/api/tuits',createTuit);
     app.get('/api/tuits', findTuits);
     app.put('/api/tuits/:tid', updateTuit);
     app.delete('/api/tuits/:tid', deleteTuit);
 }
-
